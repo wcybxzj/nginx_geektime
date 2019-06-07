@@ -1,0 +1,83 @@
+让nginx1.14做反向代理,让lnmp nginx不对外进行服务
+windows:192.168.1.108
+nginx1:192.168.1.109
+nginx2:192.168.1.100
+
+windows-> nginx1(反代服务器)-> nginx2(上游服务器)
+====================================================================================================
+1.nginx1(lnmp nginx):
+修改/usr/local/nginx/conf/nginx.conf
+listen 192.168.1.109:1680;
+然后
+nginx -s stop(必须 	如果用 -s reload会存在之前tcp残留)
+lnmp nginx start
+====================================================================================================
+2.nginx2:
+cd /root/soft
+cd nginx-1.14.0
+./configure --prefix=/root/www/nginx
+make
+make install
+
+nginx.conf:
+upstream local{
+    server 192.168.1.109:1680;
+}
+server {
+    listen 16800;
+    server_name geek.dabing.com;
+    access_log /tmp/nginx2_dabing_access.log main;
+    location / {
+        proxy_pass       http://local;
+        proxy_set_header Host      $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
+
+启动nginx
+sbin/nginx
+====================================================================================================
+实验1:
+windows直接访问192.168.1.109:1680
+nginx1:
+log_format:
+$http_x_forwarded_for|$http_x_real_ip|$remote_addr
+
+tail -f /tmp/nginx1_dabing_access.log
+-|-|192.168.1.108
+====================================================================================================
+实验2:
+windows访问反代服務器 192.168.1.100:16800
+
+nginx2:
+log_format:
+$http_x_forwarded_for|$http_x_real_ip|$remote_addr
+tail -f /tmp/nginx2_dabing_access.log
+-|-|192.168.1.108
+
+nginx1:
+log_format:
+$http_x_forwarded_for|$http_x_real_ip|$remote_addr
+tail -f /tmp/nginx1_dabing_access.log
+192.168.1.108|192.168.1.108|192.168.1.100
+
+结论:通过在方向代理中的设置,让上游服务器获取到实际请求的终端的ip
+====================================================================================================
+实验3:通过proxy cache
+在反代服务器设置缓存，让特定用户的特定请求被缓存 无需请求到上游服务器
+
+windows:访问192.168.1.100:16800
+成功
+
+nginx1:
+nginx -s stop
+
+windows:访问192.168.1.100:16800
+依然成功
+
+
+
+
+

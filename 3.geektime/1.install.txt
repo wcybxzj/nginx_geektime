@@ -1,0 +1,41 @@
+1.下载
+wget http://nginx.org/download/nginx-1.14.0.tar.gz
+====================================================================
+
+2.目录结构
+auto:提供给configure让nignx知道当前系统环境
+
+CHANGES:是改了什么bug
+
+conf:示范配置文件
+
+contrib:
+让vim支持nginx配置高亮!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+cp -r contrib/vim/*  ~/.vim
+html:默认html文件
+
+man:
+man man/nginx.8
+
+src:
+程序源代码
+
+objs:
+configure执行后的中间文件,最重要的是ngx_modlues.c决定后边有什么模块会被编译进nginx
+make后将会生成可执行文件到这个目录
+
+====================================================================
+3.configure
+./configure --help|less
+./configure --prefix=/root/www/nginx
+====================================================================
+4.make
+这个文件是编译后的可执行文件和so文件
+objs/src:
+保存编译后的.o文件
+如果使用动态库.so也在这里
+生成可执行的nginx(在不停机更新nginx会用这个文件)
+====================================================================
+5.make install
+
+

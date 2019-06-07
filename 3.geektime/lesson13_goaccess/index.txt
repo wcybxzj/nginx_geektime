@@ -1,0 +1,7 @@
+基本使用
+goaccess  /tmp/nginx1_dabing_access.log -o /tmp/nginx1.html --real-time-html --time-format='%H:%M:%S' --date-format='%d/%b/%Y' --log-format=COMBINED
+http://192.168.1.109:1680/nginx1.html
+
+
+剩余问题1:多个access.log
+剩余问题2:多个server

@@ -1,0 +1,115 @@
+1.重载配置文件
+nginx -s reload
+nginx -s stop
+nginx -s reopen
+
+=====================================================================
+2.热部署
+不停服务升级nginx1.14.0为最新版本1.16版本
+
+2.1 当前nginx版本1.14 目录
+nginx -v
+nginx version: nginx/1.14.0
+
+2.2 查看之前的编译参数
+nginx -V
+configure arguments: --user=www --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_v2_module --with-http_gzip_static_module --with-http _sub_module --with-stream --with-stream_ssl_module --with-openssl=/root/soft/lnmp1.5-full/src/openssl-1.0.2o
+
+2.3 下载新的ngix
+cd /root/soft
+wget http://nginx.org/download/nginx-1.16.0.tar.gz
+tar zxvf nginx-1.16.0.tar.gz
+cd nginx-1.16.0
+./configure --prefix=/root/www/nginx-1.16-out --user=www --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_v2_module --with-http_gzip_static_module --with-http_sub_module --with-stream --with-stream_ssl_module --with-openssl=/root/soft/lnmp1.5-full/src/openssl-1.0.2o
+
+make
+
+2.4备份原nginx
+cp /usr/bin/nginx /usr/bin/nginx_old
+cp -f  /root/soft/nginx-1.16.0/objs/nginx  /usr/bin/nginx
+
+2.5 
+root@177:/usr/bin# ps -ef|grep nginx
+root       1256      1  0 11:12 ?        00:00:00 nginx: master process /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+www        1281   1256  0 11:12 ?        00:00:00 nginx: worker process
+www        1282   1256  0 11:12 ?        00:00:00 nginx: worker process
+www        1283   1256  0 11:12 ?        00:00:00 nginx: worker process
+www        1284   1256  0 11:12 ?        00:00:00 nginx: worker process
+
+kill -USR2 1256 (意思是让原nginx 从之前启动的位置fork+exec(/usr/bin/新nginx))
+
+root@177:/usr/bin# ps -ef|grep nginx
+root       1256      1  0 11:12 ?        00:00:00 nginx: master process /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+www        1281   1256  0 11:12 ?        00:00:00 nginx: worker process
+www        1282   1256  0 11:12 ?        00:00:00 nginx: worker process
+www        1283   1256  0 11:12 ?        00:00:00 nginx: worker process
+www        1284   1256  0 11:12 ?        00:00:00 nginx: worker process
+root     108895   1256  0 13:28 ?        00:00:00 nginx: master process /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+www      108896 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108897 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108898 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108899 108895  0 13:28 ?        00:00:00 nginx: worker process
+
+root@177:/usr/bin# kill -WINCH 1256 (老主进程关闭 优雅关闭所有worker)
+
+root@177:/usr/bin# ps -ef|grep nginx
+root       1256      1  0 11:12 ?        00:00:00 nginx: master process /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+root     108895   1256  0 13:28 ?        00:00:00 nginx: master process /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+www      108896 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108897 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108898 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108899 108895  0 13:28 ?        00:00:00 nginx: worker process
+root     111446  56453  0 13:33 pts/12   00:00:00 grep --color=auto nginx
+
+root@177:/usr/bin# kill -HUP 1256 (老主进程 不加载配置重新启动worker)
+
+root@177:/usr/bin# ps -ef|grep nginx
+root       1256      1  0 11:12 ?        00:00:00 nginx: master process /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+root     108895   1256  0 13:28 ?        00:00:00 nginx: master process /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+www      108896 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108897 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108898 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108899 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      113007   1256  0 13:35 ?        00:00:00 nginx: worker process
+www      113008   1256  0 13:35 ?        00:00:00 nginx: worker process
+www      113009   1256  0 13:35 ?        00:00:00 nginx: worker process
+www      113010   1256  0 13:35 ?        00:00:00 nginx: worker process
+root     113014  56453  0 13:35 pts/12   00:00:00 grep --color=auto nginx
+
+root@177:/usr/bin# kill -WINCH 1256
+
+root@177:/usr/bin# ps -ef|grep nginx
+root       1256      1  0 11:12 ?        00:00:00 nginx: master process /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+root     108895   1256  0 13:28 ?        00:00:00 nginx: master process /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+www      108896 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108897 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108898 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108899 108895  0 13:28 ?        00:00:00 nginx: worker process
+root     113182  56453  0 13:35 pts/12   00:00:00 grep --color=auto nginx
+
+root@177:/usr/bin# kill -TERM 1256 (杀死老主进程 平滑升级完成)
+
+root@177:/usr/bin# ps -ef|grep nginx
+root     108895      1  0 13:28 ?        00:00:00 nginx: master process /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+www      108896 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108897 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108898 108895  0 13:28 ?        00:00:00 nginx: worker process
+www      108899 108895  0 13:28 ?        00:00:00 nginx: worker process
+root     113186  56453  0 13:35 pts/12   00:00:00 grep --color=auto nginx
+
+root@177:~/soft/nginx-1.16.0/objs# nginx -v
+nginx version: nginx/1.16.0
+=====================================================================
+3.文件切割
+mv /usr/local/nginx/logs/access.log /usr/local/nginx/logs/access.log_123
+
+nginx -s reopen
+或者
+kill -USR1 主进程pid
+
+ll /usr/local/nginx/logs/access.log /usr/local/nginx/logs/
+access.log
+access.log_123
+
+一般日志切割是协程shell放在计划任务
+3.nginx_log_rotate.sh
