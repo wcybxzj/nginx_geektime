@@ -5,3 +5,4 @@ http://192.168.1.109:1680/nginx1.html
 
 剩余问题1:多个access.log
 剩余问题2:多个server
+以用syslog协议把多台server的日志写到一台日志server上，第5部分的课程会介绍到。这样可以提升性能，因为少了本地磁盘IO。

@@ -1,0 +1,23 @@
+cd /root/soft
+wget https://openresty.org/download/openresty-1.15.8.1.tar.gz
+
+build:中间目标文件
+
+bundle:
+nginx源码
+c语言模块
+lua模块
+
+./configure --prefix=/root/openresty
+make
+make install
+
+
+
+vim /root/openresty/nginx/conf/nginx.conf
+
+cd /root/openresty
+./bin/openresty
+
+
+http://192.168.1.109:1880/lua
