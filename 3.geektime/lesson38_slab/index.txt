@@ -1,0 +1,55 @@
+在openresty使用tenginx中的ngx_slab_stat模板
+
+cd /root/soft
+wget http://tengine.taobao.org/download/tengine-2.2.2.tar.gz
+wget https://openresty.org/download/openresty-1.15.8.1.tar.gz
+
+tar zxvf openresty-1.15.8.1.tar.gz
+cd openresty-1.15.8.1
+
+./configure --prefix=/root/www/openresty --add-module=/root/soft/tengine-2.2.2/modules/ngx_slab_stat/
+make
+make install
+
+vim /root/openresty/nginx/conf/nginx.conf
+
+cd /root/openresty
+./bin/openresty
+
+./openresty -t
+nginx: the configuration file /root/www/openresty/nginx/conf/nginx.conf syntax is ok
+
+
+
+=====================================================================================================
+
+root@ybx-virtual-machine:~# curl 127.0.0.1:8080
+* shared memory: dogs
+total:       10240(KB) free:       10168(KB) size:           4(KB)
+pages:       10168(KB) start:00007F0C59378000 end:00007F0C59D68000
+slot:           8(Bytes) total:           0 used:           0 reqs:           0 fails:           0
+slot:          16(Bytes) total:           0 used:           0 reqs:           0 fails:           0
+slot:          32(Bytes) total:         127 used:           1 reqs:           1 fails:           0
+slot:          64(Bytes) total:           0 used:           0 reqs:           0 fails:           0
+slot:         128(Bytes) total:          32 used:           1 reqs:           1 fails:           0
+slot:         256(Bytes) total:           0 used:           0 reqs:           0 fails:           0
+slot:         512(Bytes) total:           0 used:           0 reqs:           0 fails:           0
+slot:        1024(Bytes) total:           0 used:           0 reqs:           0 fails:           0
+slot:        2048(Bytes) total:           0 used:           0 reqs:           0 fails:           0
+root@ybx-virtual-machine:~# curl 127.0.0.1:8080/set
+STORE
+root@ybx-virtual-machine:~# curl 127.0.0.1:8080/get
+8
+root@ybx-virtual-machine:~# curl 127.0.0.1:8080
+* shared memory: dogs
+total:       10240(KB) free:       10168(KB) size:           4(KB)
+pages:       10168(KB) start:00007F0C59378000 end:00007F0C59D68000
+slot:           8(Bytes) total:           0 used:           0 reqs:           0 fails:           0
+slot:          16(Bytes) total:           0 used:           0 reqs:           0 fails:           0
+slot:          32(Bytes) total:         127 used:           1 reqs:           1 fails:           0
+slot:          64(Bytes) total:           0 used:           0 reqs:           0 fails:           0
+slot:         128(Bytes) total:          32 used:           2 reqs:           2 fails:           0
+slot:         256(Bytes) total:           0 used:           0 reqs:           0 fails:           0
+slot:         512(Bytes) total:           0 used:           0 reqs:           0 fails:           0
+slot:        1024(Bytes) total:           0 used:           0 reqs:           0 fails:           0
+slot:        2048(Bytes) total:           0 used:           0 reqs:           0 fails:           0
