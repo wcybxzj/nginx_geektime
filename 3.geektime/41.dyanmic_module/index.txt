@@ -1,0 +1,6 @@
+
+apt install libgd-dev
+
+./configure --prefix=/root/www/nginx --with-http_image_filter_module=dynamic
+make
+make install

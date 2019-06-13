@@ -1,0 +1,11 @@
+https://sourceforge.net/projects/pcre/files/pcre/8.43/pcre-8.43.tar.gz/download
+
+./configure
+make
+
+./pcretest
+re> /^\/admin\/website\/(\d+)\.(png|jpg)$/
+data> /admin/website/111.jpg
+0: /admin/website/111.jpg
+1: 111
+2: jpg

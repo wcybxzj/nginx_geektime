@@ -1,0 +1,23 @@
+nignx.conf: server_name_in_redirect off;
+
+root@ybx-virtual-machine:~/www/nginx# curl second.com:8080 -I
+HTTP/1.1 302 Moved Temporarily
+Server: nginx/1.14.0
+Date: Thu, 13 Jun 2019 16:23:12 GMT
+Content-Type: text/html
+Content-Length: 161
+Location: http://second.com:8080/redirect
+Connection: keep-alive
+==================================================================
+nignx.conf: server_name_in_redirect on;
+root@ybx-virtual-machine:~/www/nginx# ./sbin/nginx -s reload
+
+root@ybx-virtual-machine:~/www/nginx# curl second.com:8080 -I
+HTTP/1.1 302 Moved Temporarily
+Server: nginx/1.14.0
+Date: Thu, 13 Jun 2019 16:23:38 GMT
+Content-Type: text/html
+Content-Length: 161
+Location: http://primay.com:8080/redirect (这里重定向到primay.com)
+Connection: keep-alive
+
