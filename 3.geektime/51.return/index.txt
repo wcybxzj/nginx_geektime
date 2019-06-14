@@ -1,0 +1,9 @@
+/root/www/nginx
+echo 403 >  html/403.html
+
+实验1:只打开point1
+curl return.ybx.com:8080
+显示正常
+curl return.ybx.com:8080/not.html
+403
+
