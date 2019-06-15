@@ -37,5 +37,11 @@ objs/src:
 生成可执行的nginx(在不停机更新nginx会用这个文件)
 ====================================================================
 5.make install
+====================================================================
+将geekbang的nginx配置放入新单独安装的nginx
+cp -rf  /root/www/geektime-nginx/examples/ /root/www/nginx/conf/
 
-
+vim /root/www/nginx/conf/nginx.conf
+http{
+	include examples/rewrite.conf;
+}
