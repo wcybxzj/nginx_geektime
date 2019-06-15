@@ -23,7 +23,6 @@ src:
 objs:
 configure执行后的中间文件,最重要的是ngx_modlues.c决定后边有什么模块会被编译进nginx
 make后将会生成可执行文件到这个目录
-
 ====================================================================
 3.configure
 ./configure --help|less
@@ -41,7 +40,3 @@ objs/src:
 将geekbang的nginx配置放入新单独安装的nginx
 cp -rf  /root/www/geektime-nginx/examples/ /root/www/nginx/conf/
 
-vim /root/www/nginx/conf/nginx.conf
-http{
-	include examples/rewrite.conf;
-}
