@@ -38,5 +38,5 @@ objs/src:
 5.make install
 ====================================================================
 将geekbang的nginx配置放入新单独安装的nginx
-cp -rf  /root/www/geektime-nginx/examples/ /root/www/nginx/conf/
+cp -rf  /root/www/nginx_www/geektime-nginx/examples/ /root/www/nginx/conf/
 
