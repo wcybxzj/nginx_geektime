@@ -1,0 +1,4 @@
+root@ybx-virtual-machine:~/www/nginx# curl tryfiles.taohui.tech:8080/first
+lasturl!
+root@ybx-virtual-machine:~/www/nginx# curl tryfiles.taohui.tech:8080/second
+http 404

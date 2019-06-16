@@ -1,0 +1,5 @@
+curl limit.taohui.tech:8080/index.html
+正常输出就是比较慢
+
+curl limit.taohui.tech:8080/index.html
+报错http 500

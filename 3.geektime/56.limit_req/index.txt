@@ -1,0 +1,31 @@
+limit_conn1.conf
+实验1:
+因为限速是每分钟不超过2个请求
+也就是只能处理1个请求 第2个就503
+
+curl limit.taohui.tech:8080/index.html
+正常
+curl limit.taohui.tech:8080/index.html
+http 503
+================================================
+limit_conn2.conf
+实验2:因为限速是每分钟不超过2个请求(1个)+漏桶中的3个请求是nodelay
+所以实际1分钟处理4个请求
+
+curl limit.taohui.tech:8080/index.html
+正常 因为限速还没触发
+curl limit.taohui.tech:8080/index.html
+在漏桶中的通过nodely 正常响应
+curl limit.taohui.tech:8080/index.html
+在漏桶中的通过nodely 正常响应
+curl limit.taohui.tech:8080/index.html
+在漏桶中的通过nodely 正常响应
+curl limit.taohui.tech:8080/index.html
+http 503
+================================================
+limit_conn3.conf
+限速和限制连接同时打开,可以看到http503
+curl limit.taohui.tech:8080/index.html
+正常
+curl limit.taohui.tech:8080/index.html
+http 503

@@ -4,13 +4,41 @@ http{
 }
 =================================================================
 cd /root/www/nginx/html
-mkdir first second third
+mkdir -p first second third
 echo 111 > first/1.txt
 echo 222 >second/2.txt
 echo 333 > third/3.txt
 =================================================================
-root@177:~/www/nginx# curl rewrite.taohui.tech:8080/first/3.txt
+break的用处是结束location块
+return是结束server块的匹配
+
+curl rewrite.taohui.tech:8080/first/3.txt
+second!
+
+curl rewrite.taohui.tech:8080/first/3.txt
 333
+
+curl rewrite.taohui.tech:8080/second/3.txt
+333
+
+curl rewrite.taohui.tech:8080/third/3.txt
+third!
+
+curl -I 只返回http头部
+curl rewrite.taohui.tech:8080/redirect1/ -I
+HTTP/1.1 301 Moved Permanently
+
+curl rewrite.taohui.tech:8080/redirect2/ -I
+HTTP/1.1 302 Moved Temporarily
+
+curl rewrite.taohui.tech:8080/redirect3/ -I
+HTTP/1.1 302 Moved Temporarily
+
+curl rewrite.taohui.tech:8080/redirect4/ -I
+HTTP/1.1 301 Moved Permanently
+
+
+
 =================================================================
 =================================================================
 =================================================================

@@ -1,0 +1,7 @@
+root@ybx-virtual-machine:~/www/nginx# curl location.taohui.tech:8080/Test1
+exact match!
+root@ybx-virtual-machine:~/www/nginx# curl location.taohui.tech:8080/Test1/
+stop regular expressions match!
+root@ybx-virtual-machine:~/www/nginx# curl location.taohui.tech:8080/Test1/Test2
+longest regular expressions match!
+root@ybx-virtual-machine:~/www/nginx# curl location.taohui.tech:8080/Test1/Test2/
