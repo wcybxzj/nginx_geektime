@@ -1,0 +1,30 @@
+63课: /root/www/nginx/html/first/ /root/www/nginx/html/realpathoot alias
+测试1:
+curl static.taohui.tech:8080/root
+404
+
+tail -f logs/myerror.log
+open() "/root/www/nginx/html/root" failed
+=================================================================
+测试2:
+curl static.taohui.tech:8080/root/1.txt
+
+tail -f logs/myerror.log
+open() "/root/www/nginx/html/first/1.txt/root/1.txt" failed
+==================================================================
+测试3:
+curl static.taohui.tech:8080/alias/
+成功访问到html/index.html
+==================================================================
+测试4:
+curl static.taohui.tech:8080/alias/1.txt
+111
+==================================================================
+==================================================================
+==================================================================
+64课static模块3个变量
+
+ln -s /root/www/nginx/html/first/ /root/www/nginx/html/realpath
+
+curl static.taohui.tech:8080/RealPath/1.txt
+/root/www/nginx/html/realpath/1.txt:/root/www/nginx/html/realpath/:/root/www/nginx/html/first

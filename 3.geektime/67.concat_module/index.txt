@@ -1,0 +1,4 @@
+concat模块的用处是在1个http中合并多个小文件的内容，提高网络的利用率
+Tengine(https://github.com/alibaba/nginx-http-concat) 
+--add-module=../nginx-http-concat/
+

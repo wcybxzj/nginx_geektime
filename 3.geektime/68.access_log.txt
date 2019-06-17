@@ -1,0 +1,7 @@
+access_log的格式:
+log_format combined '$remote_addr-$remote_user(这个是basic auth时候的用户名)[$time_local] ' '"$request" $status $body_bytes_sent' '"$http_referer" "$http_user_agent"'; 
+
+access_log的问题:每次写入都要open文件
+open_log_file_cache:来解决这个问题
+
+

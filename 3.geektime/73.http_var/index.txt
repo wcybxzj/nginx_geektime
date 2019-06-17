@@ -1,0 +1,18 @@
+curl -H 'Content-Length: 0' -H 'Cookie: a=c1' 'localhost:9090?a=1111&b=2222'
+
+arg_a: 1111,arg_b: 2222,args: a=1111&b=2222
+connection: 6,connection_requests: 1
+cookie_a: c1
+uri: /,document_uri: /, request_uri: /?a=1111&b=2222
+request: GET /?a=1111&b=2222 HTTP/1.1
+request_id: 0178b66e0785c13a6432b48f48d1e36b
+server: 127.0.0.1,var.taohui.tech,9090,HTTP/1.1
+tcpinfo:  16, 8, 10, 43690 
+host: localhost,server_name: var.taohui.tech,http_host: localhost:9090
+limit_rate: 10240
+hostname: ybx-virtual-machine
+content_length: 0
+status: 200
+body_bytes_sent: 0,bytes_sent: 0
+time: 0.000,1560793178.353,2019-06-18T01:39:38+08:00,18/Jun/2019:01:39:38 +0800
+

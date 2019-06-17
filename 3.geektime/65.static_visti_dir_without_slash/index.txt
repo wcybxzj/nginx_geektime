@@ -1,0 +1,39 @@
+statci模块实现了root/alias功能时,发现访问的是目录,但URL末尾没有加 / 会返回http 302
+
+测试1:
+dirredirect.conf:
+absolute_redirect off;
+
+curl:
+curl 127.0.0.1:8088/first -I
+HTTP/1.1 301 Moved Permanently
+Location: /first/
+
+浏览器:
+127.0.0.1:8088/first
+http://127.0.0.1:8088/first  http 301
+http://127.0.0.1:8088/first/ http 403
+================================================================================
+测试2:
+dirredirect.conf:
+#absolute_redirect off;
+server_name_in_redirect off;
+
+root@ybx-virtual-machine:~/www/nginx# curl 127.0.0.1:8088/first -I
+HTTP/1.1 301 Moved Permanently
+Location: http://127.0.0.1:8088/first/
+
+root@ybx-virtual-machine:~/www/nginx# curl -H 'Host: 11111111.com' 127.0.0.1:8088/first -I
+HTTP/1.1 301 Moved Permanently
+Location: http://11111111.com:8088/first/
+
+================================================================================
+测试3:
+dirredirect.conf:
+#absolute_redirect off;
+server_name_in_redirect on;
+
+root@ybx-virtual-machine:~/www/nginx# curl -H 'Host: 11111111.com' 127.0.0.1:8088/first -I
+HTTP/1.1 301 Moved Permanently
+Location: http://return.taohui.tech:8088/first/
+

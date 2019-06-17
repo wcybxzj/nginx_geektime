@@ -40,3 +40,15 @@ objs/src:
 将geekbang的nginx配置放入新单独安装的nginx
 cp -rf  /root/www/nginx_www/geektime-nginx/examples/ /root/www/nginx/conf/
 
+====================================================================
+为后边测试做准备
+cd /root/www/nginx/html
+mkdir -p first second third concat
+echo 111 > first/1.txt
+echo 222 >second/2.txt
+echo 333 > third/3.txt
+echo thisis1.txt > concat/1.txt
+echo thisis2.txt > concat/2.txt
+
+cd /root/www/nginx
+echo 403 >  html/403.html
