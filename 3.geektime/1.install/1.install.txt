@@ -26,7 +26,7 @@ make后将会生成可执行文件到这个目录
 ====================================================================
 3.configure
 ./configure --help|less
-./configure --prefix=/root/www/nginx
+./configure --prefix=/root/www/nginx --with-http_realip_module
 ====================================================================
 4.make
 这个文件是编译后的可执行文件和so文件
